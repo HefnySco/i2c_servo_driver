@@ -11,3 +11,6 @@ People are welcome to add and tune functions.
 It is worth to note here that it is very simple to use **[Multiwii protocol](https://github.com/multiwii/multiwii-firmware/blob/upstream_shared/Protocol.cpp "Multiwii protocol")** that is already available to send serial commands instead of using I2C.
 
 **STATUS:** still in developig and need lots of code cleansing.
+
+
+It is worth to note here that it is very simple to use **[Multiwii protocol](https://github.com/multiwii/multiwii-firmware/blob/upstream_shared/Protocol.cpp "Multiwii protocol")** that is already available to send serial commands instead of using I2C.
