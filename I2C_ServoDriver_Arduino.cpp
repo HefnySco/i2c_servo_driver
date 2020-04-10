@@ -261,15 +261,6 @@ uint8_t rcSerialCount = 0;   // a counter to select legacy RX when there is no m
 int16_t lookupPitchRollRC[5];// lookup table for expo & RC rate PITCH+ROLL
 int16_t lookupThrottleRC[11];// lookup table for expo & mid THROTTLE
 
-#if defined(SPEKTRUM) || defined(SBUS)
-  volatile uint8_t  spekFrameFlags;
-  volatile uint32_t spekTimeLast;
-  uint8_t  spekFrameDone;
-#endif
-
-#if defined(OPENLRSv2MULTI)
-  uint8_t pot_P,pot_I; // OpenLRS onboard potentiometers for P and I trim or other usages
-#endif
 
 
 // *************************
