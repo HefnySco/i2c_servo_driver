@@ -417,12 +417,7 @@ void blinkLED(uint8_t num, uint8_t ontime,uint8_t repeat) {
       i2c_write(b[0]);
       i2c_stop();  
     } 
-    else if (!f.ACC_CALIBRATED) { // Multiwii not stable or uncalibrated 
-      b[0]= 't';
-      i2c_rep_start(LED_RING_ADDRESS);
-      i2c_write(b[0]);
-      i2c_stop();   
-    }
+    
     else { // Motors not running = on the ground
       b[0]= 's';
       if (f.ANGLE_MODE) b[1]=1; 

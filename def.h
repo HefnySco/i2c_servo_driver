@@ -146,7 +146,7 @@
   #define COPTER_WITH_SERVO
 #endif
 
-#if defined(COPTER_WITH_SERVO) || defined(SERVO_TILT) || defined(GIMBAL) || defined(CAMTRIG) || defined(SERVO_MIX_TILT)
+#if defined (I2C_PCA9685_EMULATOR) || defined(COPTER_WITH_SERVO) || defined(SERVO_TILT) || defined(GIMBAL) || defined(CAMTRIG) || defined(SERVO_MIX_TILT)
   #define SERVO
 #endif
 
@@ -168,8 +168,9 @@
 #endif
 
 #if defined(I2C_PCA9685_EMULATOR)
-#define NUMBER_MOTOR     1
-#define PRI_SERVO_TO     2 // use servo from 4 to 5
+    #define NUMBER_MOTOR     0
+    #define PRI_SERVO_FROM   4 // use servo from 1 to 2
+    #define PRI_SERVO_TO     7
 #endif
 
 #if defined(GIMBAL)
@@ -1595,123 +1596,45 @@
 
 #if defined(ServoDriver_ArduinoNano)
 // MHEFNY
+  #define PCA9685_PRIMARY_ADDRESS 0x40
+
+  #define PCA9685_RA_MODE1           0x00
+  #define PCA9685_RA_MODE2           0x01
+  #define PCA9685_RA_LED0_ON_L       0x06
+  #define PCA9685_RA_LED0_ON_H       0x07
+  #define PCA9685_RA_LED0_OFF_L      0x08
+  #define PCA9685_RA_LED0_OFF_H      0x09
+  #define PCA9685_RA_ALL_LED_ON_L    0xFA
+  #define PCA9685_RA_ALL_LED_ON_H    0xFB
+  #define PCA9685_RA_ALL_LED_OFF_L   0xFC
+  #define PCA9685_RA_ALL_LED_OFF_H   0xFD
+  #define PCA9685_RA_PRE_SCALE       0xFE
+
+  #define PCA9685_MODE1_RESTART_BIT  (1 << 7)
+  #define PCA9685_MODE1_EXTCLK_BIT   (1 << 6)
+  #define PCA9685_MODE1_AI_BIT       (1 << 5)
+  #define PCA9685_MODE1_SLEEP_BIT    (1 << 4)
+  #define PCA9685_MODE1_SUB1_BIT     (1 << 3)
+  #define PCA9685_MODE1_SUB2_BIT     (1 << 2)
+  #define PCA9685_MODE1_SUB3_BIT     (1 << 1)
+  #define PCA9685_MODE1_ALLCALL_BIT  (1 << 0)
+  #define PCA9685_ALL_LED_OFF_H_SHUT (1 << 4)
+  #define PCA9685_MODE2_INVRT_BIT    (1 << 4)
+  #define PCA9685_MODE2_OCH_BIT      (1 << 3)
+  #define PCA9685_MODE2_OUTDRV_BIT   (1 << 2)
+  #define PCA9685_MODE2_OUTNE1_BIT   (1 << 1)
+  #define PCA9685_MODE2_OUTNE0_BIT   (1 << 0)
 #endif
-/**************************************************************************************/
-/***************              Sensor Type definitions              ********************/
-/**************************************************************************************/
-
-#if defined(ADXL345) || defined(BMA020) || defined(BMA180) || defined(BMA280) || defined(NUNCHACK) || defined(MMA7455) || defined(ADCACC) || defined(LIS3LV02) || defined(LSM303DLx_ACC) || defined(MPU6050) || defined(LSM330) || defined(MMA8451Q) || defined(NUNCHUCK)
-  #define ACC 1
-#else
-  #define ACC 0
-#endif
-
-#if defined(HMC5883) || defined(HMC5843) || defined(AK8975) || defined(MAG3110)
-  #define MAG 1
-#else
-  #define MAG 0
-#endif
-
-#if defined(ITG3200) || defined(L3G4200D) || defined(MPU6050) || defined(LSM330) || defined(MPU3050) || defined(WMP)
-  #define GYRO 1
-#else
-  #define GYRO 0
-#endif
-
-#if defined(BMP085) || defined(MS561101BA)
-  #define BARO 1
-#else
-  #define BARO 0
-#endif
-
-#if defined(GPS_PROMINI_SERIAL) && defined(PROMINI)
-  #define GPS_SERIAL 0
-  #define GPS_PROMINI
-#endif
-
-#if defined(GPS_SERIAL)  || defined(I2C_GPS) || defined(GPS_FROM_OSD)
-  #define GPS 1
-#else
-  #define GPS 0
-#endif
-
-#if defined(SRF02) || defined(SRF08) || defined(SRF10) || defined(SRC235) || defined(I2C_GPS_SONAR)
-  #define SONAR 1
-#else
-  #define SONAR 0
-#endif
-
-
 /**************************************************************************************/
 /***************      Multitype decleration for the GUI's          ********************/
 /**************************************************************************************/
-#if defined(TRI)
-  #define MULTITYPE 1
-#elif defined(QUADP)
-  #define MULTITYPE 2
-#elif defined(QUADX)
-  #define MULTITYPE 3
-#elif defined(BI)
-  #define MULTITYPE 4
-  #define SERVO_RATES      {30,30,100,100,0,1,100,100}
-#elif defined(GIMBAL)
-  #define MULTITYPE 5
-#elif defined(Y6)
-  #define MULTITYPE 6
-#elif defined(HEX6)
-  #define MULTITYPE 7
-#elif defined(FLYING_WING)
-  #define MULTITYPE 8
-  #define SERVO_RATES      {30,30,100,0,1,100,100,100}
-#elif defined(Y4)
-  #define MULTITYPE 9
-#elif defined(HEX6X)
-  #define MULTITYPE 10
-#elif defined(OCTOX8)
-  #define MULTITYPE 11   //the JAVA GUI is the same for all 8 motor configs 
-#elif defined(OCTOFLATP)
-  #define MULTITYPE 12   //12  for MultiWinGui
-#elif defined(OCTOFLATX)
-  #define MULTITYPE 13   //13  for MultiWinGui 
-#elif defined(AIRPLANE)
-  #define MULTITYPE 14    
-  #define SERVO_RATES      {30,30,100,100,-100,100,100,100}
-#elif defined (HELI_120_CCPM)   
-  #define MULTITYPE 15      
-#elif defined (HELI_90_DEG)   
-  #define MULTITYPE 16      
-  #define SERVO_RATES      {30,30,100,-100,-100,100,100,100}
-#elif defined(VTAIL4)
-  #define MULTITYPE 17
-#elif defined(HEX6H)
-  #define MULTITYPE 18
-#elif defined(SINGLECOPTER)
-  #define MULTITYPE 20
-  #define SERVO_RATES      {30,30,100,0,1,0,1,100}
-#elif defined(DUALCOPTER)
-  #define MULTITYPE 20
-#elif defined(I2C_PCA9685_EMULATOR)
+#if defined(I2C_PCA9685_EMULATOR)
   #define MULTITYPE 21
 #endif
 
 /**************************************************************************************/
 /***************          Some unsorted "chain" defines            ********************/
 /**************************************************************************************/
-
-#if defined (AIRPLANE) || defined(HELICOPTER)|| defined(SINGLECOPTER)|| defined(DUALCOPTER) && defined(PROMINI) 
-  #if defined(D12_POWER)
-    #define SERVO_4_PINMODE            ;  // D12
-    #define SERVO_4_PIN_HIGH           ;
-    #define SERVO_4_PIN_LOW            ;
-  #else
-    #undef POWERPIN_PINMODE
-    #undef POWERPIN_ON
-    #undef POWERPIN_OFF
-    #define POWERPIN_PINMODE           ;
-    #define POWERPIN_ON                ;
-    #define POWERPIN_OFF               ;
-  #endif
-#endif
 
 #if defined(POWERMETER_HARD) || defined(POWERMETER_SOFT)
   #define POWERMETER
@@ -1720,75 +1643,20 @@
   #define PLEVELDIV 36000
 #endif
 
-#if defined PILOTLAMP 
-  #define    PL_CHANNEL OCR0B  //use B since A can be used by camstab
-  #define    PL_ISR TIMER0_COMPB_vect
-  #define    PL_INIT   TCCR0A=0;TIMSK0|=(1<<OCIE0B);PL_CHANNEL=PL_IDLE;PilotLamp(PL_GRN_OFF);PilotLamp(PL_BLU_OFF);PilotLamp(PL_RED_OFF);PilotLamp(PL_BZR_OFF);
-  #define    BUZZERPIN_ON PilotLamp(PL_BZR_ON);
-  #define    BUZZERPIN_OFF PilotLamp(PL_BZR_OFF);
-  #define    PL_GRN_ON    25    // 100us
-  #define    PL_GRN_OFF   50    // 200us
-  #define    PL_BLU_ON    75    // 300us
-  #define    PL_BLU_OFF   100    // 400us
-  #define    PL_RED_ON    125    // 500us
-  #define    PL_RED_OFF   150    // 600us
-  #define    PL_BZR_ON    175    // 700us
-  #define    PL_BZR_OFF   200    // 800us
-  #define    PL_IDLE      125    // 100us
-#endif
-
-#if defined(PILOTLAMP)
-  #define BUZZER
-#endif
-
 //all new Special RX's must be added here
 //this is to avoid confusion :)
 #if !defined(SERIAL_SUM_PPM) && !defined(SPEKTRUM) && !defined(SBUS)
   #define STANDARD_RX
 #endif
 
-// Spektrum Satellite
-#if defined(SPEKTRUM)
-  #define SPEK_FRAME_SIZE 16
-  #if (SPEKTRUM == 1024)
-    #define SPEK_CHAN_SHIFT  2       // Assumes 10 bit frames, that is 1024 mode.
-    #define SPEK_CHAN_MASK   0x03    // Assumes 10 bit frames, that is 1024 mode.
-    #define SPEK_DATA_SHIFT          // Assumes 10 bit frames, that is 1024 mode.
-    #define SPEK_BIND_PULSES 3
-  #endif
-  #if (SPEKTRUM == 2048)
-    #define SPEK_CHAN_SHIFT  3       // Assumes 11 bit frames, that is 2048 mode.
-    #define SPEK_CHAN_MASK   0x07    // Assumes 11 bit frames, that is 2048 mode.
-    #define SPEK_DATA_SHIFT >> 1     // Assumes 11 bit frames, that is 2048 mode.
-    #define SPEK_BIND_PULSES 5
-  #endif
-  #if defined(SPEK_BIND)
-    #if !defined(SPEK_BIND_GROUND)
-      #define SPEK_BIND_GROUND 4
-    #endif  
-    #if !defined(SPEK_BIND_POWER)
-      #define SPEK_BIND_POWER  5
-    #endif  
-    #if !defined(SPEK_BIND_DATA)
-      #define SPEK_BIND_DATA   6
-    #endif  
-  #endif
-#endif
-
-#if defined(SBUS)
-  #define RC_CHANS 18
-#elif defined(SPEKTRUM) || defined(SERIAL_SUM_PPM)
-  #define RC_CHANS 12
-#else
-  #define RC_CHANS 8
-#endif
+#define RC_CHANS 8
 
 
 /**************************************************************************************/
 /***************                       I2C GPS                     ********************/
 /**************************************************************************************/
 #if defined(I2C_GPS)
-  #define I2C_GPS_ADDRESS                         0x20 //7 bits       
+  #define I2C_GPS_ADDRESS                     0x20 //7 bits       
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // I2C GPS NAV registers
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1892,67 +1760,6 @@
 // End register definition 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#endif
-
-#if !(defined(DISPLAY_2LINES)) && !(defined(DISPLAY_MULTILINE))
-  #if (defined(LCD_VT100)) || (defined(OLED_I2C_128x64) || defined(OLED_DIGOLE) )
-    #define DISPLAY_MULTILINE
-  #else
-    #define DISPLAY_2LINES
-  #endif
-#endif
-
-#if (defined(LCD_VT100))
-  #if !(defined(MULTILINE_PRE))
-    #define MULTILINE_PRE 6
-  #endif
-  #if !(defined(MULTILINE_POST))
-    #define MULTILINE_POST 9
-  #endif
-  #if !(defined(DISPLAY_COLUMNS))
-    #define DISPLAY_COLUMNS 40
-  #endif
-#elif (defined(OLED_I2C_128x64) && defined(DISPLAY_FONT_DSIZE))
-  #if !(defined(MULTILINE_PRE))
-    #define MULTILINE_PRE 1
-  #endif
-  #if !(defined(MULTILINE_POST))
-    #define MULTILINE_POST 3
-  #endif
-  #if !(defined(DISPLAY_COLUMNS))
-    #define DISPLAY_COLUMNS 21
-  #endif
-#elif (defined(OLED_I2C_128x64))
-  #if !(defined(MULTILINE_PRE))
-    #define MULTILINE_PRE 3
-  #endif
-  #if !(defined(MULTILINE_POST))
-    #define MULTILINE_POST 5
-  #endif
-  #if !(defined(DISPLAY_COLUMNS))
-    #define DISPLAY_COLUMNS 21
-  #endif
-#elif (defined(OLED_DIGOLE) && defined(DISPLAY_FONT_DSIZE))
-  #if !(defined(MULTILINE_PRE))
-    #define MULTILINE_PRE 2
-  #endif
-  #if !(defined(MULTILINE_POST))
-    #define MULTILINE_POST 3
-  #endif
-#elif (defined(OLED_DIGOLE))
-  #if !(defined(MULTILINE_PRE))
-    #define MULTILINE_PRE 3
-  #endif
-  #if !(defined(MULTILINE_POST))
-    #define MULTILINE_POST 4
-  #endif
-  #if !(defined(DISPLAY_COLUMNS))
-    #define DISPLAY_COLUMNS 21
-  #endif
-#endif
-
-#if !(defined(DISPLAY_COLUMNS))
-  #define DISPLAY_COLUMNS 16
 #endif
 
 

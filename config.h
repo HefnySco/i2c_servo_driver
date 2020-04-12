@@ -252,8 +252,8 @@
     //#define USE_THROTTLESERVO // For use of standard 50Hz servo on throttle.
 
     //#define FLAPPERONS    AUX4          // Mix Flaps with Aileroins.
-    #define FLAPPERON_EP   { 1500, 1700 } // Endpooints for flaps on a 2 way switch else set {1020,2000} and program in radio.
-    #define FLAPPERON_INVERT { -1, 1 }    // Change direction om flapperons { Wing1, Wing2 }
+    //#define FLAPPERON_EP   { 1500, 1700 } // Endpooints for flaps on a 2 way switch else set {1020,2000} and program in radio.
+    //#define FLAPPERON_INVERT { -1, 1 }    // Change direction om flapperons { Wing1, Wing2 }
     
     //#define FLAPS                       // Traditional Flaps on SERVO3.
     //#define FLAPSPEED     3             // Make flaps move slowm Higher value is Higher Speed.
@@ -460,11 +460,7 @@
   /* Gyrocalibration will be repeated if copter is moving during calibration. */
     //#define GYROCALIBRATIONFAILSAFE
 
-  /************************        AP FlightMode        **********************************/
-    /* Temporarily Disables GPS_HOLD_MODE to be able to make it possible to adjust the Hold-position when moving the sticks.*/
-    #define AP_MODE 40  // Create a deadspan for GPS.
-        
-  /************************   Assisted AcroTrainer    ************************************/
+ /************************   Assisted AcroTrainer    ************************************/
     /* Train Acro with auto recovery. Value set the point where ANGLE_MODE takes over.
        Remember to activate ANGLE_MODE first!...
        A Value on 200 will give a very distinct transfer */
@@ -495,8 +491,8 @@
     //#define LED_FLASHER_PORT PORTB
     //#define LED_FLASHER_BIT PORTB4
     //#define LED_FLASHER_INVERT
-    #define LED_FLASHER_SEQUENCE        0b00000000      // leds OFF
-    #define LED_FLASHER_SEQUENCE_ARMED  0b00000101      // create double flashes
+    #define LED_FLASHER_SEQUENCE          0b00000000      // leds OFF
+    #define LED_FLASHER_SEQUENCE_ARMED    0b00000101      // create double flashes
     //#define LED_FLASHER_SEQUENCE_MAX    0b11111111      // full illumination
     //#define LED_FLASHER_SEQUENCE_LOW    0b00000000      // no illumination
 
@@ -522,63 +518,7 @@
     //#define INFLIGHT_ACC_CALIBRATION
 
   
-  /**************************************************************************************/
-  /***********************                  GPS                **************************/
-  /**************************************************************************************/
-
-    /* GPS using a SERIAL port
-       if enabled, define here the Arduino Serial port number and the UART speed
-       note: only the RX PIN is used in case of NMEA mode, the GPS is not configured by multiwii
-       in NMEA mode the GPS must be configured to output GGA and RMC NMEA sentences (which is generally the default conf for most GPS devices)
-       at least 5Hz update rate. uncomment the first line to select the GPS serial port of the arduino */
-       
-    //#define GPS_SERIAL 2         // should be 2 for flyduino v2. It's the serial port number on arduino MEGA
-    //#define GPS_PROMINI_SERIAL   // Will Autosense if GPS is connected when ardu boots.
-
-    // avoid using 115200 baud because with 16MHz arduino the 115200 baudrate have more than 2% speed error (57600 have 0.8% error)
-    #define GPS_BAUD   57600
-
-   /* GPS protocol 
-       NMEA  - Standard NMEA protocol GGA, GSA and RMC  sentences are needed
-       UBLOX - U-Blox binary protocol, use the ublox config file (u-blox-config.ublox.txt) from the source tree 
-       MTK_BINARY16 and MTK_BINARY19 - MTK3329 chipset based GPS with DIYDrones binary firmware (v1.6 or v1.9)
-       With UBLOX and MTK_BINARY you don't have to use GPS_FILTERING in multiwii code !!! */
-
-    
-    //#define NMEA
-    //#define UBLOX
-    //#define MTK_BINARY16
-    //#define MTK_BINARY19
-    //#define INIT_MTK_GPS        // initialize MTK GPS for using selected speed, 5Hz update rate and GGA & RMC sentence or binary settings
-
-    
-    /* I2C GPS device made with an independant arduino + GPS device
-       including some navigation functions
-       contribution from EOSBandi   http://code.google.com/p/i2c-gps-nav/ 
-       You have to use at least I2CGpsNav code r33 */
-    //#define I2C_GPS
-    // If your I2C GPS board has Sonar support enabled
-    //#define I2C_GPS_SONAR
-
-    /* GPS data readed from Misio-OSD - GPS module connected to OSD, and MultiWii read GPS data from OSD - tested and working OK ! */
-    //#define GPS_FROM_OSD
-
-    /* indicate a valid GPS fix with at least 5 satellites by flashing the LED  - Modified by MIS - Using stable LED (YELLOW on CRIUS AIO) led work as sat number indicator 
-      - No GPS FIX -> LED blink at speed of incoming GPS frames
-      - Fix and sat no. bellow 5 -> LED off
-      - Fix and sat no. >= 5 -> LED blinks, one blink for 5 sat, two blinks for 6 sat, three for 7 ... */
-    #define GPS_LED_INDICATOR
-
-    //#define USE_MSP_WP                        //Enables the MSP_WP command, which is used by WinGUI to display and log Home and Poshold positions
-
-    //#define DONT_RESET_HOME_AT_ARM             // HOME position is reset at every arm, uncomment it to prohibit it (you can set home position with GyroCalibration)
-
-    /* GPS navigation can control the heading */
-    
-    #define NAV_CONTROLS_HEADING       true      // copter faces toward the navigation point, maghold must be enabled for it
-    #define NAV_TAIL_FIRST             false     // true - copter comes in with tail first 
-    #define NAV_SET_TAKEOFF_HEADING    true      // true - when copter arrives to home position it rotates it's head to takeoff direction
-    
+  
     
     /* Get your magnetic declination from here : http://magnetic-declination.com/
        Convert the degree+minutes into decimal degree by ==> degree+minutes*(1/60)
@@ -611,84 +551,9 @@
       //#define OLED_I2C_128x64 // I2C LCD: OLED http://www.multiwii.com/forum/viewtopic.php?f=7&t=1350
       //#define OLED_DIGOLE     // I2C OLED from http://www.digole.com/index.php?productID=550
 
-    /******************************   Display settings   ***********************************/
-      #define LCD_SERIAL_PORT 0    // must be 0 on Pro Mini and single serial boards; Set to your choice on any Mega based board
-
-      //#define SUPPRESS_OLED_I2C_128x64LOGO  // suppress display of OLED logo to save memory
-
-    /* double font height for better readability. Reduces visible #lines by half.
-     * The lower part of each page is accessible under the name of shifted keyboard letter :
-     * 1 - ! , 2 - @ , 3 - # , 4 - $ , 5 - % , 6 - ^ , 7 - & , 8 - * , 9 - (
-     * You must add both to your lcd.telemetry.* sequences
-     */
-      //#define DISPLAY_FONT_DSIZE //currently only aplicable for OLED_I2C_128x64 and OLED_DIGOLE
-
-    /* style of display - AUTODETECTED via LCD_ setting - only activate to override defaults */
-      //#define DISPLAY_2LINES
-      //#define DISPLAY_MULTILINE
-      //#define MULTILINE_PRE 2  // multiline configMenu # pref lines
-      //#define MULTILINE_POST 6 // multiline configMenu # post lines
-      //#define DISPLAY_COLUMNS 16
-    /********************************    Navigation     ***********************************/
-    /* keys to navigate the LCD menu */
-      #define LCD_MENU_PREV 'p'
-      #define LCD_MENU_NEXT 'n'
-      #define LCD_VALUE_UP 'u'
-      #define LCD_VALUE_DOWN 'd'
-
-      #define LCD_MENU_SAVE_EXIT 's'
-      #define LCD_MENU_ABORT 'x'
-
-  /**************************************************************************************/
-  /***********************      LCD configuration menu         **************************/
-  /**************************************************************************************/
-
-    /* uncomment this line if you plan to use a LCD or OLED for tweaking parameters
-     * http://www.multiwii.com/wiki/index.php?title=Extra_features#Configuration_Menu */
-      //#define LCD_CONF
-
-    /* to include setting the aux switches for AUX1 -> AUX4 via LCD */
-      //#define LCD_CONF_AUX
-
-    /* optional exclude some functionality - uncomment to suppress unwanted aux channel configuration options */
-      //#define SUPPRESS_LCD_CONF_AUX2
-      //#define SUPPRESS_LCD_CONF_AUX34
-
-  /**************************************************************************************/
-  /***********************      LCD       telemetry            **************************/
-  /**************************************************************************************/
-
-    /* to monitor system values (battery level, loop time etc. with LCD 
-     * http://www.multiwii.com/wiki/index.php?title=LCD_Telemetry */
-
-    /********************************    Activation     ***********************************/
-    //#define LCD_TELEMETRY
-
-    /* to enable automatic hopping between a choice of telemetry pages uncomment this. */
-    //#define LCD_TELEMETRY_AUTO "123452679" // pages 1 to 9 in ascending order
-    //#define LCD_TELEMETRY_AUTO  "212232425262729" // strong emphasis on page 2
-
-    /* manual stepping sequence; first page of the sequence gets loaded at startup to allow non-interactive display */
-    //#define LCD_TELEMETRY_STEP "0123456789" // should contain a 0 to allow switching off.
-
-    /* optional exclude some functionality - uncomment to suppress some unwanted telemetry pages */
-    //#define SUPPRESS_TELEMETRY_PAGE_1
-    //#define SUPPRESS_TELEMETRY_PAGE_2
-    //#define SUPPRESS_TELEMETRY_PAGE_3
-    //#define SUPPRESS_TELEMETRY_PAGE_4
-    //#define SUPPRESS_TELEMETRY_PAGE_5
-    //#define SUPPRESS_TELEMETRY_PAGE_6
-    //#define SUPPRESS_TELEMETRY_PAGE_7
-    //#define SUPPRESS_TELEMETRY_PAGE_8
-    //#define SUPPRESS_TELEMETRY_PAGE_9
-    //#define SUPPRESS_TELEMETRY_PAGE_R
-
-  /********************************************************************/
-  /****                             RSSI                           ****/
-  /********************************************************************/
-    //#define RX_RSSI
-    //#define RX_RSSI_PIN A3
-
+    
+     
+   
   /********************************************************************/
   /****                             Buzzer                         ****/
   /********************************************************************/
@@ -750,22 +615,7 @@
      * + want to save memory space */
     //#define SUPPRESS_BARO_ALTHOLD
 
-  /********************************************************************/
-  /****           altitude variometer                              ****/
-  /********************************************************************/
-
-    /* enable to get audio feedback upon rising/falling copter/plane.
-     * Requires a working baro.
-     * For now, Output gets sent to an enabled vt100 terminal program over the serial line.
-     * choice of two methods (enable either one or both)
-     * method 1 : use short term movement from baro ( bigger code size)
-     * method 2 : use long term observation of altitude from baro (smaller code size)
-     */
-    //#define VARIOMETER 12            // possible values: 12 = methods 1 & 2 ; 1 = method 1 ; 2 = method 2
-    //#define SUPPRESS_VARIOMETER_UP   // if no signaling for up movement is desired
-    //#define SUPPRESS_VARIOMETER_DOWN // if no signaling for down movement is desired
-    //#define VARIOMETER_SINGLE_TONE   // use only one tone (BEL); neccessary for non-patched vt100 terminals
-
+  
   /********************************************************************/
   /****           baord naming                                     ****/
   /********************************************************************/
@@ -852,7 +702,7 @@
     /* HW PWM Servo outputs for 32u4 NanoWii, MicroWii etc. - works with either the variable SERVO_RFR_RATE or
      * one of the 3 fixed servo.refresh.rates *
      * Tested only for heli_120, i.e. 1 motor + 4 servos, moves..
-     * motor[0] = motor       = pin  6
+     * motor[0] = motor       = pin  6 or pin 3
      * servo[3] = nick  servo = pin 11
      * servo[4] = left  servo = pin 10
      * servo[5] = yaw   servo = pin  5

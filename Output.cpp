@@ -1137,9 +1137,15 @@ void mixTable() {
   /****************                   main Mix Table                ******************/
   #if defined( MY_PRIVATE_MIXING )
     #include MY_PRIVATE_MIXING
-  #if defined (I2C_PCA9685_EMULATOR)
-    motor[0] = rcCommand[THROTTLE]
-    servo[1] = axisPID[YAW];
+  #elif defined (I2C_PCA9685_EMULATOR)
+    //motor[0] = 1000; //rcCommand[ROLL];
+    //motor[1] = 1000; //rcCommand[ROLL];
+    //servo[3] = 1000; //rcCommand[PITCH]; // pin D
+    servo[4] = rcCommand[ROLL]; // pin D11
+    servo[5] = rcCommand[PITCH]; // pin D3
+    servo[6] = rcCommand[PITCH]; // pin D10
+    servo[7] = rcCommand[PITCH]; // pin D
+    //servo[2] = 3000; //rcCommand[PITCH];
   #elif defined( BI )
     motor[0] = PIDMIX(+1, 0, 0); //LEFT
     motor[1] = PIDMIX(-1, 0, 0); //RIGHT
@@ -1151,10 +1157,10 @@ void mixTable() {
     motor[2] = rcCommand[ROLL]; //LEFT
     servo[5] = rcCommand[PITCH];
   #elif defined( QUADP )
-    motor[0] = rcCommand[THROTTLE]; //REAR
-    motor[1] = rcCommand[YAW];      //RIGHT
-    motor[2] = rcCommand[ROLL];     //LEFT
-    motor[3] = rcCommand[PITCH];    //FRONT
+    motor[0] = 1000; //rcCommand[THROTTLE]; //REAR
+    motor[1] = 100; //rcCommand[YAW];      //RIGHT
+    motor[2] = 10; //rcCommand[ROLL];     //LEFT
+    motor[3] = 20; //rcCommand[PITCH];    //FRONT
   #elif defined( QUADX )
     motor[0] = rcCommand[THROTTLE]; //REAR_R
     motor[1] = rcCommand[YAW]; //FRONT_R
@@ -1232,75 +1238,23 @@ void mixTable() {
     #error "missing coptertype mixtable entry. Either you forgot to define a copter type or the mixing table is lacking neccessary code"
   #endif // MY_PRIVATE_MIXING
 
-  /************************************************************************************************************/
-  /****************************                Cam stabilize Servos             *******************************/
 
-  #if defined(SERVO_TILT)
-    servo[0] = get_middle(0);
-    servo[1] = get_middle(1);
-    if (rcOptions[BOXCAMSTAB]) {
-      servo[0] += ((int32_t)conf.servoConf[0].rate * att.angle[PITCH]) /50L;
-      servo[1] += ((int32_t)conf.servoConf[1].rate * att.angle[ROLL])  /50L;
-    }
-  #endif
-
-  #ifdef SERVO_MIX_TILT
-    int16_t angleP = get_middle(0) - MIDRC;
-    int16_t angleR = get_middle(1) - MIDRC;
-    if (rcOptions[BOXCAMSTAB]) {
-      angleP += ((int32_t)conf.servoConf[0].rate * att.angle[PITCH]) /50L;
-      angleR += ((int32_t)conf.servoConf[1].rate * att.angle[ROLL])  /50L;
-    }
-    servo[0] = MIDRC+angleP-angleR;
-    servo[1] = MIDRC-angleP-angleR;
-  #endif
-
-/****************                    Cam trigger Servo                ******************/
-  #if defined(CAMTRIG)
-    // setup MIDDLE for using as camtrig interval (in msec) or RC channel pointer for interval control
-    #define CAM_TIME_LOW  conf.servoConf[2].middle
-    static uint8_t camCycle = 0;
-    static uint8_t camState = 0;
-    static uint32_t camTime = 0;
-    static uint32_t ctLow;
-    if (camCycle==1) {
-      if (camState == 0) {
-        camState = 1;
-        camTime = millis();
-      } else if (camState == 1) {
-        if ( (millis() - camTime) > CAM_TIME_HIGH ) {
-          camState = 2;
-          camTime = millis();
-          if(CAM_TIME_LOW < RC_CHANS) {
-            ctLow = constrain((rcData[CAM_TIME_LOW]-1000)/4, 30, 250);
-            ctLow *= ctLow;
-          } else ctLow = CAM_TIME_LOW;
-        }
-      } else { //camState ==2
-        if (((millis() - camTime) > ctLow) || !rcOptions[BOXCAMTRIG] ) {
-          camState = 0;
-          camCycle = 0;
-        }
-      }
-    }
-    if (rcOptions[BOXCAMTRIG]) camCycle=1;
-    servo[2] =(camState==1) ? conf.servoConf[2].max : conf.servoConf[2].min;
-    servo[2] = (servo[2]-1500)*SERVODIR(2,1)+1500;
-  #endif
 
 /************************************************************************************************************/
   // add midpoint offset, then scale and limit servo outputs - except SERVO8 used commonly as Moror output
   // don't add offset for camtrig servo (SERVO3)
   #if defined(SERVO)
-    for(i=SERVO_START-1; i<SERVO_END; i++) {
-      if(i < 2) {
-        servo[i] = map(servo[i], 1020,2000, conf.servoConf[i].min, conf.servoConf[i].max);   // servo travel scaling, only for gimbal servos
-      }
-    #if defined(HELICOPTER) && (YAWMOTOR)
-      if(i != 5) // not limit YawMotor
-    #endif
-        servo[i] = constrain(servo[i], conf.servoConf[i].min, conf.servoConf[i].max); // limit the values
-    }
+    // for(i=SERVO_START-1; i<SERVO_END; i++) {
+    //   if(i < 2) {
+    //     servo[i] = map(servo[i], 1020,2000, conf.servoConf[i].min, conf.servoConf[i].max);   // servo travel scaling, only for gimbal servos
+    //     Serial.print (servo[i],DEC);
+    //     Serial.print("\n");
+    //   }
+    // #if defined(HELICOPTER) && (YAWMOTOR)
+    //   if(i != 5) // not limit YawMotor
+    // #endif
+    //     servo[i] = constrain(servo[i], conf.servoConf[i].min, conf.servoConf[i].max); // limit the values
+    // }
     #if defined(A0_A1_PIN_HEX) && (NUMBER_MOTOR == 6) && defined(PROMINI)
       servo[3] = servo[0];    // copy CamPitch value to propper output servo for A0_A1_PIN_HEX
       servo[4] = servo[1];    // copy CamRoll  value to propper output servo for A0_A1_PIN_HEX
@@ -1311,24 +1265,6 @@ void mixTable() {
     #endif
   #endif
 
-  /****************                compensate the Motors values                ******************/
-  #ifdef VOLTAGEDROP_COMPENSATION
-    {
-      #if (VBATNOMINAL == 126)
-        #define GOV_R_NUM 36
-        static int8_t g[] = { 0,3,5,8,11,14,17,19,22,25,28,31,34,38,41,44,47,51,54,58,61,65,68,72,76,79,83,87,91,95,99,104,108,112,117,121,126 };
-      #elif (VBATNOMINAL == 84)
-        #define GOV_R_NUM 24
-        static int8_t g[] = { 0,4,8,12,17,21,25,30,34,39,44,49,54,59,65,70,76,81,87,93,99,106,112,119,126 };
-      #else
-        #error "VOLTAGEDROP_COMPENSATION requires correction values which fit VBATNOMINAL; not yet defined for your value of VBATNOMINAL"
-      #endif
-      uint8_t v = constrain( VBATNOMINAL - constrain(analog.vbat, conf.vbatlevel_crit, VBATNOMINAL), 0, GOV_R_NUM);
-      for (i = 0; i < NUMBER_MOTOR; i++) {
-        motor[i] += ( ( (int32_t)(motor[i]-1000) * (int32_t)g[v] ) )/ 500;
-      }
-    }
-  #endif
   /****************                normalize the Motors values                ******************/
     maxMotor=motor[0];
     for(i=1; i< NUMBER_MOTOR; i++)
@@ -1347,43 +1283,5 @@ void mixTable() {
         motor[i] = MINCOMMAND;
     }
 
-  /****************                      Powermeter Log                    ******************/
-  #if (LOG_VALUES >= 3) || defined(POWERMETER_SOFT)
-  {
-    static uint32_t lastRead = currentTime;
-    uint16_t amp;
-    uint32_t ampsum, ampus; // pseudo ampere * microseconds
-    /* true cubic function;
-     * when divided by vbat_max=126 (12.6V) for 3 cell battery this gives maximum value of ~ 500
-     * when divided by no_vbat=60 (6V) for 3 cell battery this gives maximum value of ~ 1000
-     * */
-
-    static uint16_t amperes[64] =   {   0,  2,  6, 15, 30, 52, 82,123,
-                                     175,240,320,415,528,659,811,984,
-                                     1181,1402,1648,1923,2226,2559,2924,3322,
-                                     3755,4224,4730,5276,5861,6489,7160,7875,
-                                     8637 ,9446 ,10304,11213,12173,13187,14256,15381,
-                                     16564,17805,19108,20472,21900,23392,24951,26578,
-                                     28274,30041,31879,33792,35779,37843,39984,42205,
-                                     44507,46890,49358,51910,54549,57276,60093,63000};
   
-    if (analog.vbat > NO_VBAT) { // by all means - must avoid division by zero
-      ampsum = 0;
-      for (i =0;i<NUMBER_MOTOR;i++) {
-        amp = amperes[ ((motor[i] - 1000)>>4) ] / analog.vbat; // range mapped from [1000:2000] => [0:1000]; then break that up into 64 ranges; lookup amp
-        ampus = ( (currentTime-lastRead) * (uint32_t)amp * (uint32_t)conf.pint2ma ) / PLEVELDIVSOFT;
-        #if (LOG_VALUES >= 3)
-          pMeter[i]+= ampus; // sum up over time the mapped ESC input
-        #endif
-        #if defined(POWERMETER_SOFT)
-          ampsum += ampus; // total sum over all motors
-        #endif
-      }
-      #if defined(POWERMETER_SOFT)
-        pMeter[PMOTOR_SUM]+= ampsum / NUMBER_MOTOR; // total sum over all motors
-      #endif
-    }
-    lastRead = currentTime;
-  }
-  #endif
 }
