@@ -4,5 +4,5 @@
 extern uint8_t PWM_PIN[8];
 
 void configureI2CSlave();
-
+ void zeroI2C ();
 #endif /* I2C_SLAVE_H_ */

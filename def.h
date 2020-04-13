@@ -146,7 +146,7 @@
   #define COPTER_WITH_SERVO
 #endif
 
-#if defined (I2C_PCA9685_EMULATOR) || defined(COPTER_WITH_SERVO) || defined(SERVO_TILT) || defined(GIMBAL) || defined(CAMTRIG) || defined(SERVO_MIX_TILT)
+#if defined (MW_I2C_ROVER) || defined(COPTER_WITH_SERVO) || defined(SERVO_TILT) || defined(GIMBAL) || defined(CAMTRIG) || defined(SERVO_MIX_TILT)
   #define SERVO
 #endif
 
@@ -167,9 +167,9 @@
   #define TRI_SERVO  6
 #endif
 
-#if defined(I2C_PCA9685_EMULATOR)
-    #define NUMBER_MOTOR     0
-    #define PRI_SERVO_FROM   4 // use servo from 1 to 2
+#if defined(MW_I2C_ROVER)
+    #define NUMBER_MOTOR     1
+    #define PRI_SERVO_FROM   5 // use servo from 1 to 2
     #define PRI_SERVO_TO     7
 #endif
 
@@ -1596,39 +1596,53 @@
 
 #if defined(ServoDriver_ArduinoNano)
 // MHEFNY
-  #define PCA9685_PRIMARY_ADDRESS 0x40
+  #define MW_I2C__PRIMARY_ADDRESS 0x40
+  
+  #define MW_I2C__CH0                0x00
+  #define MW_I2C__CH1                0x01
+  #define MW_I2C__CH2                0x02
+  #define MW_I2C__CH3                0x03
+  #define MW_I2C__CH4                0x04
+  #define MW_I2C__CH5                0x05
+  #define MW_I2C__CH6                0x06
+  #define MW_I2C__CH7                0x07
+  #define MW_I2C__CH8                0x08
+  #define MW_I2C__CH9                0x09
+  #define MW_I2C__CH10               0x0a
+  #define MW_I2C__CH11               0x0b
+  #define MW_I2C__CH12               0x0c
+  #define MW_I2C__CH13               0x0d
+  #define MW_I2C__CH14               0x0e
+  #define MW_I2C__CH15               0x0f
+  #define MW_I2C__CH16               0x10
+  #define MW_I2C__CH17               0x11
 
-  #define PCA9685_RA_MODE1           0x00
-  #define PCA9685_RA_MODE2           0x01
-  #define PCA9685_RA_LED0_ON_L       0x06
-  #define PCA9685_RA_LED0_ON_H       0x07
-  #define PCA9685_RA_LED0_OFF_L      0x08
-  #define PCA9685_RA_LED0_OFF_H      0x09
-  #define PCA9685_RA_ALL_LED_ON_L    0xFA
-  #define PCA9685_RA_ALL_LED_ON_H    0xFB
-  #define PCA9685_RA_ALL_LED_OFF_L   0xFC
-  #define PCA9685_RA_ALL_LED_OFF_H   0xFD
-  #define PCA9685_RA_PRE_SCALE       0xFE
+  #define MW_I2C__RA_LED0_ON_L       0xF9
+  #define MW_I2C__RA_ALL_LED_ON_L    0xFA
+  #define MW_I2C__RA_ALL_LED_ON_H    0xFB
+  #define MW_I2C__RA_ALL_LED_OFF_L   0xFC
+  #define MW_I2C__RA_ALL_LED_OFF_H   0xFD
+  #define MW_I2C__RA_PRE_SCALE       0xFE
 
-  #define PCA9685_MODE1_RESTART_BIT  (1 << 7)
-  #define PCA9685_MODE1_EXTCLK_BIT   (1 << 6)
-  #define PCA9685_MODE1_AI_BIT       (1 << 5)
-  #define PCA9685_MODE1_SLEEP_BIT    (1 << 4)
-  #define PCA9685_MODE1_SUB1_BIT     (1 << 3)
-  #define PCA9685_MODE1_SUB2_BIT     (1 << 2)
-  #define PCA9685_MODE1_SUB3_BIT     (1 << 1)
-  #define PCA9685_MODE1_ALLCALL_BIT  (1 << 0)
-  #define PCA9685_ALL_LED_OFF_H_SHUT (1 << 4)
-  #define PCA9685_MODE2_INVRT_BIT    (1 << 4)
-  #define PCA9685_MODE2_OCH_BIT      (1 << 3)
-  #define PCA9685_MODE2_OUTDRV_BIT   (1 << 2)
-  #define PCA9685_MODE2_OUTNE1_BIT   (1 << 1)
-  #define PCA9685_MODE2_OUTNE0_BIT   (1 << 0)
+  #define MW_I2C__MODE1_RESTART_BIT  (1 << 7)
+  #define MW_I2C__MODE1_EXTCLK_BIT   (1 << 6)
+  #define MW_I2C__MODE1_AI_BIT       (1 << 5)
+  #define MW_I2C__MODE1_SLEEP_BIT    (1 << 4)
+  #define MW_I2C__MODE1_SUB1_BIT     (1 << 3)
+  #define MW_I2C__MODE1_SUB2_BIT     (1 << 2)
+  #define MW_I2C__MODE1_SUB3_BIT     (1 << 1)
+  #define MW_I2C__MODE1_ALLCALL_BIT  (1 << 0)
+  #define MW_I2C__ALL_LED_OFF_H_SHUT (1 << 4)
+  #define MW_I2C__MODE2_INVRT_BIT    (1 << 4)
+  #define MW_I2C__MODE2_OCH_BIT      (1 << 3)
+  #define MW_I2C__MODE2_OUTDRV_BIT   (1 << 2)
+  #define MW_I2C__MODE2_OUTNE1_BIT   (1 << 1)
+  #define MW_I2C__MODE2_OUTNE0_BIT   (1 << 0)
 #endif
 /**************************************************************************************/
 /***************      Multitype decleration for the GUI's          ********************/
 /**************************************************************************************/
-#if defined(I2C_PCA9685_EMULATOR)
+#if defined(MW_I2C_ROVER)
   #define MULTITYPE 21
 #endif
 
@@ -1643,11 +1657,6 @@
   #define PLEVELDIV 36000
 #endif
 
-//all new Special RX's must be added here
-//this is to avoid confusion :)
-#if !defined(SERIAL_SUM_PPM) && !defined(SPEKTRUM) && !defined(SBUS)
-  #define STANDARD_RX
-#endif
 
 #define RC_CHANS 8
 

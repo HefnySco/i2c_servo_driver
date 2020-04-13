@@ -52,7 +52,7 @@
     //#define DUALCOPTER
     //#define HELI_120_CCPM
     //#define HELI_90_DEG
-    #define I2C_PCA9685_EMULATOR
+    #define MW_I2C_ROVER
   /****************************    Motor minthrottle    *******************************/
     /* Set the minimum throttle command sent to the ESC (Electronic Speed Controller)
        This is the minimum value that allow motors to run at a idle speed  */
@@ -222,12 +222,7 @@
      * */
     #define PID_CONTROLLER 3 //MHEFNY 
 
-    /* NEW: not used anymore for servo coptertypes  <== NEEDS FIXING - MOVE TO WIKI */
-    #define YAW_DIRECTION 1
-    //#define YAW_DIRECTION -1 // if you want to reverse the yaw correction direction
-
-    #define ONLYARMWHENFLAT //prevent the copter from arming when the copter is tilted
-
+    
    /********************************    ARM/DISARM    *********************************/
    /* optionally disable stick combinations to arm/disarm the motors.
      * In most cases one of the two options to arm/disarm via TX stick is sufficient */
@@ -784,67 +779,6 @@
     /* Enable string transmissions from copter to GUI */
     //#define DEBUGMSG
 
-
-  /********************************************************************/
-  /****           ESCs calibration                                 ****/
-  /********************************************************************/
-
-    /* to calibrate all ESCs connected to MWii at the same time (useful to avoid unplugging/re-plugging each ESC)
-       Warning: this creates a special version of MultiWii Code
-       You cannot fly with this special version. It is only to be used for calibrating ESCs
-       Read How To at http://code.google.com/p/multiwii/wiki/ESCsCalibration */
-    #define ESC_CALIB_LOW  MINCOMMAND
-    #define ESC_CALIB_HIGH 2000
-    //#define ESC_CALIB_CANNOT_FLY  // uncomment to activate
-
-  /****           internal frequencies                             ****/
-    /* frequenies for rare cyclic actions in the main loop, depend on cycle time
-       time base is main loop cycle time - a value of 6 means to trigger the action every 6th run through the main loop
-       example: with cycle time of approx 3ms, do action every 6*3ms=18ms
-       value must be [1; 65535] */
-    #define LCD_TELEMETRY_FREQ 23       // to send telemetry data over serial 23 <=> 60ms <=> 16Hz (only sending interlaced, so 8Hz update rate)
-    #define LCD_TELEMETRY_AUTO_FREQ  967// to step to next telemetry page 967 <=> 3s
-    #define PSENSOR_SMOOTH 16           // len of averaging vector for smoothing the PSENSOR readings; should be power of 2; set to 1 to disable
-    #define VBAT_SMOOTH 16              // len of averaging vector for smoothing the VBAT readings; should be power of 2; set to 1 to disable
-    #define RSSI_SMOOTH 16              // len of averaging vector for smoothing the RSSI readings; should be power of 2; set to 1 to disable
-
-  /********************************************************************/
-  /****           Dynamic Motor/Prop Balancing                     ****/
-  /********************************************************************/
-  /*                   !!! No Fly Mode !!!                            */ 
-		
-    //#define DYNBALANCE   // (**) Dynamic balancing controlled from Gui
-
-  /********************************************************************/
-  /****           Regression testing                               ****/
-  /********************************************************************/
-
-    /* for development only:
-       to allow for easier and reproducable config sets for test compiling, different sets of config parameters are kept
-       together. This is meant to help detecting compile time errors for various features in a coordinated way.
-       It is not meant to produce your flying firmware
-       To use:
-       - do not set any options in config.h,
-       - enable with #define COPTERTEST 1, then compile
-       - if possible, check for the size
-       - repeat with other values of 2, 3, 4 etc.
-        */
-    //#define COPTERTEST 1
-
-/*************************************************************************************************/
-/*****************                                                                 ***************/
-/****************  SECTION  8 - DEPRECATED                                                 *******/
-/*****************                                                                 ***************/
-/*************************************************************************************************/
-
-  /* these features will be removed in the unforseeable future. Do not build new products or
-   * functionality based on such features. The default for all such features is OFF.
-   */
-
-  /**************************    WMP power pin     *******************************/
-  //#define D12_POWER      // Use D12 on PROMINI to power sensors. Will disable servo[4] on D12
-  /* disable use of the POWER PIN (allready done if the option RCAUXPIN12 is selected) */
-  #define DISABLE_POWER_PIN
 
 
 /*************************************************************************************************/

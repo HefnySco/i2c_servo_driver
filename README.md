@@ -1,10 +1,9 @@
 ### I2C Servo Driver using Arduino
 
-The purpose of this project is to make a simple semi-alternative of **[PCA9685 16-Channel Servo Driver](https://learn.adafruit.com/16-channel-pwm-servo-driver?view=all "PCA9685 16-Channel Servo Driver") **using Arduino boards.
+The purpose of this project is to make a simple semi-alternative of **[MW_I2C_ 16-Channel Servo Driver](https://learn.adafruit.com/16-channel-pwm-servo-driver?view=all "MW_I2C_ 16-Channel Servo Driver") **using Arduino boards.
 
-The project make use of the old and excellent code of iconic **[Multiwii](https://github.com/multiwii/multiwii-firmware "Multiwii")**. as Multiwii has very optimized and flexible code for controlling motor and servos.
+The project make use of the old and excellent code of iconic **[Multiwii](https://github.com/multiwii/multiwii-firmware "Multiwii")**. As Multiwii has very optimized and flexible code for controlling motor and servos.
 
-This code emulates I2C communication with  **[PCA9685 16-Channel Servo Driver](https://learn.adafruit.com/16-channel-pwm-servo-driver?view=all "PCA9685 16-Channel Servo Driver") ** however it is no intended to make all functions.
 
 People are welcome to add and tune functions.
 

@@ -83,11 +83,11 @@ extern volatile int16_t failsafeCnt;
 
 extern int16_t rcData[RC_CHANS];
 extern int16_t rcSerial[8];
-extern int16_t rcCommand[4];
+extern volatile uint16_t Servo_Buffer[18];
 extern uint8_t rcSerialCount;
 extern int16_t lookupPitchRollRC[5];
 extern int16_t lookupThrottleRC[11];
-
+extern volatile uint8_t i2c_slave_received;
 #if defined(POWERMETER) || ( defined(LOG_VALUES) && (LOG_VALUES >= 3) )
   #define PMOTOR_SUM 8                     // index into pMeter[] for sum
   extern uint32_t pMeter[PMOTOR_SUM + 1];  // we use [0:7] for eight motors,one extra for sum
