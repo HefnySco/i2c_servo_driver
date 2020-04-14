@@ -260,7 +260,7 @@ int TwoWire::read(void)
 // or after requestFrom(address, numBytes)
 int TwoWire::readFast(void)
 {
-  int value = -1;
+  int value;
   
   // get each successive byte on each call
   value = rxBuffer[rxBufferIndex];
