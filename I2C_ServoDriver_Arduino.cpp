@@ -24,6 +24,7 @@ November  2013     V2.3
 
 #include <avr/pgmspace.h>
 
+
 /*********** RC alias *****************/
 
 const char pidnames[] PROGMEM =
@@ -218,13 +219,13 @@ volatile int16_t failsafeCnt = 0;
 
 int16_t rcData[RC_CHANS];    // interval [1000;2000]
 int16_t rcSerial[8];         // interval [1000;2000] - is rcData coming from MSP
-volatile uint16_t Servo_Buffer[18] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+volatile uint16_t Servo_Buffer[SERVO_CHANNELS_MAX] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 uint8_t rcSerialCount = 0;   // a counter to select legacy RX when there is no more MSP rc serial data
 int16_t lookupPitchRollRC[5];// lookup table for expo & RC rate PITCH+ROLL
 int16_t lookupThrottleRC[11];// lookup table for expo & mid THROTTLE
 uint32_t i2c_slave_received_time;
-volatile uint8_t i2c_slave_received;
-#define I2C_TIME_OUT 999999
+volatile uint8_t i2c_slave_received = 0;
+#define I2C_TIME_OUT 999999l
 
 // *************************
 // motor and servo functions
@@ -246,38 +247,7 @@ conf_t conf;
   plog_t plog;
 #endif
 
-// **********************
-// GPS common variables
-// **********************
-  int16_t  GPS_angle[2] = { 0, 0};                      // the angles that must be applied for GPS correction
-  int32_t  GPS_coord[2];
-  int32_t  GPS_home[2];
-  int32_t  GPS_hold[2];
-  uint8_t  GPS_numSat;
-  uint16_t GPS_distanceToHome;                          // distance to home  - unit: meter
-  int16_t  GPS_directionToHome;                         // direction to home - unit: degree
-  uint16_t GPS_altitude;                                // GPS altitude      - unit: meter
-  uint16_t GPS_speed;                                   // GPS speed         - unit: cm/s
-  uint8_t  GPS_update = 0;                              // a binary toogle to distinct a GPS position update
-  uint16_t GPS_ground_course = 0;                       //                   - unit: degree*10
-  uint8_t  GPS_Present = 0;                             // Checksum from Gps serial
-  uint8_t  GPS_Enable  = 0;
-  uint8_t  GPS_Frame   = 0;
 
-  // The desired bank towards North (Positive) or South (Negative) : latitude
-  // The desired bank towards East (Positive) or West (Negative)   : longitude
-  int16_t  nav[2];
-  int16_t  nav_rated[2];    //Adding a rate controller to the navigation to make it smoother
-
-  uint8_t nav_mode = NAV_MODE_NONE; // Navigation mode
-
-  uint8_t alarmArray[16];           // array
- 
-#if BARO
-  int32_t baroPressure;
-  int16_t baroTemperature;
-  int32_t baroPressureSum;
-#endif
 
 void annexCode() { // this code is excetuted at each loop and won't interfere with control loop if it lasts less than 650 microseconds
   uint16_t tmp,tmp2;
@@ -356,6 +326,7 @@ void setup() {
 
 // ******** Main Loop *********
 void loop () {
+  static uint16_t counter =0;
   static uint8_t rcDelayCommand; // this indicates the number of time (multiple of RC measurement at 50Hz) the sticks must be maintained to run or switch off motors
   static uint8_t rcSticks;       // this hold sticks position for command combos
   uint8_t axis,i;
@@ -389,23 +360,7 @@ void loop () {
     // checking sticks positions
     
  
-  } else { // not in rc loop
-    static uint8_t taskOrder=0; // never call all functions in the same loop, to avoid high delay spikes
-    if(taskOrder>4) taskOrder-=5;
-    switch (taskOrder) {
-      case 0:
-        taskOrder++;
-      case 1:
-        taskOrder++;
-      case 2:
-        taskOrder++;
-      case 3:
-        taskOrder++;
-      case 4:
-        taskOrder++;
-        break;
-    }
-  }
+  } 
  
   // Measure loop rate just afer reading the sensors
   currentTime = micros();
@@ -415,25 +370,22 @@ void loop () {
   {
     i2c_slave_received_time = currentTime;
     i2c_slave_received = 0;
+    counter = 0x00000000;
+    //Serial.print ("  IN IN IN \n");
   }
-  if ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT)
+  else
   {
-    //zeroI2C();
-    // Serial.print(currentTime);
-    // Serial.print ("  Zero I2C\n");
+    // No Data Received
+    counter += 0x00000001;
+    if ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT)
+    {
+      zeroI2C();
+      Serial.print(counter & 0x7FFF,DEC);
+      Serial.print ("  Zero I2C\n");
+    }
+    
   }
 
-  
-
-  //**** PITCH & ROLL & YAW PID ****
-#if PID_CONTROLLER == 1 // evolved oldschool
-  
-#elif PID_CONTROLLER == 2 // alexK
- 
-#elif PID_CONTROLLER == 3 // alexK
-#else
-  #error "*** you must set PID_CONTROLLER to one existing implementation"
-#endif
   mixTable();
   writeServos();
   writeMotors();

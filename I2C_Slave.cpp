@@ -6,17 +6,17 @@
 #include "I2C_ServoDriver_Arduino.h"
 #include "WireMod.h"
 #include "i2c.h"
-//#include "Serial.h"
-#define CH1 
+
 volatile static uint8_t atomic_update =0;
 
 #define REQUEST_ID 0xFFFF
+static int i = 0;
 
 static void requestEvent (void)
 {
   Serial.print("requestEvent CALLED \r\n");
 }
-static int i = 0;
+
 static void receiveEvent(int bytes) {
   
   // Serial.print("EVENT CALLED ");
@@ -38,23 +38,22 @@ static void receiveEvent(int bytes) {
       Serial.print("ID\n");
 
     break;
-    case MW_I2C__RA_ALL_LED_ON_L:
-        Serial.print("MW_I2C__RA_ALL_LED_ON_L\r\n");
-        while ((bytes>1) && (i<18))
+    
+    case MW_I2C_RA_ALL_OUTPUT_SAME:
+        Serial.print("MW_I2C_RA_ALL_OUTPUT_SAME\r\n");
+        param1 = Wire.readFast();
+        param2 = Wire.readFast();
+        i=MW_I2C_CH0;
+        while (i<SERVO_CHANNELS_MAX)
         {
-          Servo_Buffer[i] =  0xFF & Wire.read();
+          Servo_Buffer[i] =  param1 +  param2 * 0xFF;
           ++i;
-          --bytes;
         }
-      break;
-    // case MW_I2C__RA_MODE1:
-    //     Serial.print("MW_I2C__RA_MODE1\r\n");
-    //     Wire.read(); 
-    //     //MW_I2C__ALL_LED_OFF_H_SHUT
-    //   break;
-    case MW_I2C__CH0:
-        i=MW_I2C__CH0;
-        while (Wire.available() && (i<18))
+    break;
+    
+    case MW_I2C_CH0:
+        i=MW_I2C_CH0;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -67,9 +66,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH1:
-        i=MW_I2C__CH1;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH1:
+        i=MW_I2C_CH1;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -82,9 +81,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH2:
-        i=MW_I2C__CH2;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH2:
+        i=MW_I2C_CH2;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -97,9 +96,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH3:
-        i=MW_I2C__CH3;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH3:
+        i=MW_I2C_CH3;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -112,9 +111,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH4:
-        i=MW_I2C__CH4;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH4:
+        i=MW_I2C_CH4;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -127,9 +126,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH5:
-        i=MW_I2C__CH5;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH5:
+        i=MW_I2C_CH5;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -142,9 +141,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH6:
-        i=MW_I2C__CH6;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH6:
+        i=MW_I2C_CH6;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -157,9 +156,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH7:
-        i=MW_I2C__CH7;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH7:
+        i=MW_I2C_CH7;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -172,9 +171,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH8:
-        i=MW_I2C__CH8;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH8:
+        i=MW_I2C_CH8;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -187,9 +186,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH9:
-        i=MW_I2C__CH9;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH9:
+        i=MW_I2C_CH9;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -202,9 +201,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH10:
-        i=MW_I2C__CH10;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH10:
+        i=MW_I2C_CH10;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -217,9 +216,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH11:
-        i=MW_I2C__CH11;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH11:
+        i=MW_I2C_CH11;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -232,9 +231,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH12:
-        i=MW_I2C__CH12;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH12:
+        i=MW_I2C_CH12;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -247,9 +246,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH13:
-        i=MW_I2C__CH13;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH13:
+        i=MW_I2C_CH13;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -262,9 +261,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH14:
-        i=MW_I2C__CH14;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH14:
+        i=MW_I2C_CH14;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -277,9 +276,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH15:
-        i=MW_I2C__CH15;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH15:
+        i=MW_I2C_CH15;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -292,9 +291,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH16:
-        i=MW_I2C__CH16;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH16:
+        i=MW_I2C_CH16;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -307,9 +306,9 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__CH17:
-        i=MW_I2C__CH17;
-        while (Wire.available() && (i<18))
+    case MW_I2C_CH17:
+        i=MW_I2C_CH17;
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -324,7 +323,7 @@ static void receiveEvent(int bytes) {
 
     case MW_I2C__RA_LED0_ON_L:
         //Serial.print("MW_I2C__RA_LED0_ON_L\r\n");
-        while (Wire.available() && (i<18))
+        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
         {
           param1 = Wire.readFast();
           param2 = Wire.readFast();
@@ -367,30 +366,20 @@ static void receiveEvent(int bytes) {
 
 void zeroI2C ()
 {
-  if (atomic_update ==1) return;
-  atomic_update = 1;
-
   for (int i=0;i<8;++i)
   {
+    if (atomic_update ==1) return;
     Servo_Buffer[i] = 0;
   }
-
-  atomic_update = 0;
 }
+
 void configureI2CSlave()
 {
-    //SerialWrite(1,0x64);
-    blinkLED(2,120,4); //global_conf.currentSet+1);
-    //SerialWrite (0,'C');
-    //SerialEnd(0);
     Serial.print("configureI2CSlave initialized at ");
 
     // Start the I2C Bus as Slave on address 9
     Wire.setClock(400000L) ;
     Wire.begin(MW_I2C__PRIMARY_ADDRESS); 
-    //Serial.print(MW_I2C__PRIMARY_ADDRESS, HEX);
-    //Serial.print(" \r\n");
-    // Attach a function to trigger when something is received.
     Wire.onReceive(receiveEvent);
     Wire.onRequest(requestEvent);
 

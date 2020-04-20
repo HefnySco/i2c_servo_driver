@@ -1598,27 +1598,27 @@
 // MHEFNY
   #define MW_I2C__PRIMARY_ADDRESS 0x40
   
-  #define MW_I2C__CH0                0x00
-  #define MW_I2C__CH1                0x01
-  #define MW_I2C__CH2                0x02
-  #define MW_I2C__CH3                0x03
-  #define MW_I2C__CH4                0x04
-  #define MW_I2C__CH5                0x05
-  #define MW_I2C__CH6                0x06
-  #define MW_I2C__CH7                0x07
-  #define MW_I2C__CH8                0x08
-  #define MW_I2C__CH9                0x09
-  #define MW_I2C__CH10               0x0a
-  #define MW_I2C__CH11               0x0b
-  #define MW_I2C__CH12               0x0c
-  #define MW_I2C__CH13               0x0d
-  #define MW_I2C__CH14               0x0e
-  #define MW_I2C__CH15               0x0f
-  #define MW_I2C__CH16               0x10
-  #define MW_I2C__CH17               0x11
+  #define MW_I2C_CH0                0x00
+  #define MW_I2C_CH1                0x01
+  #define MW_I2C_CH2                0x02
+  #define MW_I2C_CH3                0x03
+  #define MW_I2C_CH4                0x04
+  #define MW_I2C_CH5                0x05
+  #define MW_I2C_CH6                0x06
+  #define MW_I2C_CH7                0x07
+  #define MW_I2C_CH8                0x08
+  #define MW_I2C_CH9                0x09
+  #define MW_I2C_CH10               0x0a
+  #define MW_I2C_CH11               0x0b
+  #define MW_I2C_CH12               0x0c
+  #define MW_I2C_CH13               0x0d
+  #define MW_I2C_CH14               0x0e
+  #define MW_I2C_CH15               0x0f
+  #define MW_I2C_CH16               0x10
+  #define MW_I2C_CH17               0x11
 
-  #define MW_I2C__RA_LED0_ON_L       0xF9
-  #define MW_I2C__RA_ALL_LED_ON_L    0xFA
+  #define MW_I2C__RA_LED0_ON_L        0xF9
+  #define MW_I2C_RA_ALL_OUTPUT_SAME   0xFA
   #define MW_I2C__RA_ALL_LED_ON_H    0xFB
   #define MW_I2C__RA_ALL_LED_OFF_L   0xFC
   #define MW_I2C__RA_ALL_LED_OFF_H   0xFD

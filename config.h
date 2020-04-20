@@ -4,26 +4,7 @@
 /*************************************************************************************************/
 /****           CONFIGURABLE PARAMETERS                                                       ****/
 /*************************************************************************************************/
-
-/* this file consists of several sections
- * to create a working combination you must at least make your choices in section 1.
- * 1 - BASIC SETUP - you must select an option in every block.
- *      this assumes you have 4 channels connected to your board with standard ESCs and servos.
- * 2 - COPTER TYPE SPECIFIC OPTIONS - you likely want to check for options for your copter type
- * 3 - RC SYSTEM SETUP
- * 4 - ALTERNATE CPUs & BOARDS - if you have
- * 5 - ALTERNATE SETUP - select alternate RX (SBUS, PPM, etc.), alternate ESC-range, etc. here
- * 6 - OPTIONAL FEATURES - enable nice to have features here (FlightModes, LCD, telemetry, battery monitor etc.)
- * 7 - TUNING & DEVELOPER - if you know what you are doing; you have been warned
- *     - (ESCs calibration, Dynamic Motor/Prop Balancing, Diagnostics,Memory savings.....)
- * 8 - DEPRECATED - these features will be removed in some future release
- */
-
-/* Notes:
- * 1. parameters marked with (*) in the comment are stored in eeprom and can be changed via serial monitor or LCD.
- * 2. parameters marked with (**) in the comment are stored in eeprom and can be changed via the GUI
- */
-
+#define SERVO_CHANNELS_MAX 18
 
 /*************************************************************************************************/
 /*****************                                                                 ***************/
