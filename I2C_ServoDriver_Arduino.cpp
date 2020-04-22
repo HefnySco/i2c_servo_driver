@@ -377,11 +377,12 @@ void loop () {
   {
     // No Data Received
     counter += 0x00000001;
-    if ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT)
+    if ((counter & 0b10000 ) && ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT))
     {
       zeroI2C();
       Serial.print(counter & 0x7FFF,DEC);
       Serial.print ("  Zero I2C\n");
+      
     }
     
   }

@@ -1139,8 +1139,8 @@ void mixTable() {
   #elif defined (MW_I2C_ROVER)
     motor[0] = Servo_Buffer[2];       //LEFT       // D9
     servo[4] = Servo_Buffer[0];       // pin D11   // servo 1
-    servo[5] = Servo_Buffer[1];       // pin D3    // servo 2
-    servo[6] = Servo_Buffer[3];       // pin D10   // servo 3
+    servo[5] = Servo_Buffer[0];       // pin D3    // servo 2
+    servo[6] = Servo_Buffer[0];       // pin D10   // servo 3
   #elif defined( BI )
     motor[0] = Servo_Buffer[0]; //LEFT
     motor[1] = Servo_Buffer[1]; //RIGHT

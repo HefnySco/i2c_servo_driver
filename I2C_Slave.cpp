@@ -352,11 +352,20 @@ static void receiveEvent(int bytes) {
 
 void zeroI2C ()
 {
-  for (int i=0;i<8;++i)
+  // for (int i=0;i<8;++i)
+  // {
+  //   //if (atomic_update ==1) return;
+  //   Servo_Buffer[i] = MINCOMMAND;
+  // }
+
+  Serial.print("Servo_Buffer:\r\n");
+  for (i=0;i<8;++i)
   {
-    if (atomic_update ==1) return;
-    Servo_Buffer[i] = 0;
+    Servo_Buffer[i] = MINCOMMAND;
+    Serial.print(Servo_Buffer[i]);
+    Serial.print("  ");
   }
+  Serial.print("\r\n");
 }
 
 void configureI2CSlave()
