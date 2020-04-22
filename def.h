@@ -1617,12 +1617,8 @@
   #define MW_I2C_CH16               0x10
   #define MW_I2C_CH17               0x11
 
-  #define MW_I2C__RA_LED0_ON_L        0xF9
   #define MW_I2C_RA_ALL_OUTPUT_SAME   0xFA
-  #define MW_I2C__RA_ALL_LED_ON_H    0xFB
-  #define MW_I2C__RA_ALL_LED_OFF_L   0xFC
-  #define MW_I2C__RA_ALL_LED_OFF_H   0xFD
-  #define MW_I2C__RA_PRE_SCALE       0xFE
+  
 
   #define MW_I2C__MODE1_RESTART_BIT  (1 << 7)
   #define MW_I2C__MODE1_EXTCLK_BIT   (1 << 6)

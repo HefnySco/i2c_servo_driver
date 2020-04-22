@@ -321,20 +321,6 @@ static void receiveEvent(int bytes) {
         }
     break;
 
-    case MW_I2C__RA_LED0_ON_L:
-        //Serial.print("MW_I2C__RA_LED0_ON_L\r\n");
-        while (Wire.available() && (i<SERVO_CHANNELS_MAX))
-        {
-          param1 = Wire.readFast();
-          param2 = Wire.readFast();
-          // Serial.print(param1,HEX);
-          // Serial.print("\r\n");
-          // Serial.print(param2,HEX);
-          // Serial.print("\r\n");
-          Servo_Buffer[i] =  param1 +  param2 * 0xFF;
-          ++i;
-        }
-      break;
     default:
       Serial.print("UNKNOWN\r\n");
       Serial.print(cmd,HEX);

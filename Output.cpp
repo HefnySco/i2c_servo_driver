@@ -1228,17 +1228,11 @@ void mixTable() {
     motor[3] = Servo_Buffer[3]; //FRONT
   #elif defined( FLYING_WING )
     /*****************************             FLYING WING                **************************************/
-    servo[7] = constrain(rcCommand[THROTTLE], conf.minthrottle, MAXTHROTTLE);
-    motor[0] = servo[7];
-    if (f.PASSTHRU_MODE) {    // do not use sensors for correction, simple 2 channel mixing
-      servo[3] = (SERVODIR(3,1) * rcCommand[PITCH]) + (SERVODIR(3,2) * rcCommand[ROLL]);
-      servo[4] = (SERVODIR(4,1) * rcCommand[PITCH]) + (SERVODIR(4,2) * rcCommand[ROLL]);
-    } else {                  // use sensors to correct (gyro only or gyro+acc according to aux1/aux2 configuration
-      servo[3] = (SERVODIR(3,1) * axisPID[PITCH])   + (SERVODIR(3,2) * axisPID[ROLL]);
-      servo[4] = (SERVODIR(4,1) * axisPID[PITCH])   + (SERVODIR(4,2) * axisPID[ROLL]);
-    }
-    servo[3] += get_middle(3);
-    servo[4] += get_middle(4);
+    servo[7] = Servo_Buffer[2];
+    motor[0] = Servo_Buffer[3]; 
+    servo[3] = Servo_Buffer[0];
+    servo[4] = Servo_Buffer[1];
+    
   #elif defined( AIRPLANE )
     /*****************************               AIRPLANE                **************************************/
     // servo[7] is programmed with safty features to avoid motorstarts when ardu reset..
