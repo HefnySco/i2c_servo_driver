@@ -168,9 +168,9 @@
 #endif
 
 #if defined(MW_I2C_ROVER)
-    #define NUMBER_MOTOR     1
-    #define PRI_SERVO_FROM   5 // use servo from 1 to 2
-    #define PRI_SERVO_TO     7
+    #define NUMBER_MOTOR     0
+    #define PRI_SERVO_FROM   4 // use servo from 1 to 2
+    #define PRI_SERVO_TO     6
 #endif
 
 #if defined(GIMBAL)
@@ -344,7 +344,7 @@
   #define SOFT_PWM_3_PIN_LOW         PORTC &= ~(1<<2);
   #define SOFT_PWM_4_PIN_HIGH        PORTB |= 1<<4;
   #define SOFT_PWM_4_PIN_LOW         PORTB &= ~(1<<4);
-  
+  //Arduino NANO 
   #define SERVO_1_PINMODE            pinMode(A0,OUTPUT); // TILT_PITCH - WING left
   #define SERVO_1_PIN_HIGH           PORTC |= 1<<0;
   #define SERVO_1_PIN_LOW            PORTC &= ~(1<<0);
@@ -354,11 +354,9 @@
   #define SERVO_3_PINMODE            pinMode(A2,OUTPUT); // CAM TRIG  - alt TILT_PITCH
   #define SERVO_3_PIN_HIGH           PORTC |= 1<<2;
   #define SERVO_3_PIN_LOW            PORTC &= ~(1<<2);
-  #if !defined(MONGOOSE1_0)
-    #define SERVO_4_PINMODE            pinMode(12,OUTPUT); // new       - alt TILT_ROLL
-    #define SERVO_4_PIN_HIGH           PORTB |= 1<<4;
-    #define SERVO_4_PIN_LOW            PORTB &= ~(1<<4);
-  #endif
+  #define SERVO_4_PINMODE            pinMode(12,OUTPUT); // new       - alt TILT_ROLL
+  #define SERVO_4_PIN_HIGH           PORTB |= 1<<4;
+  #define SERVO_4_PIN_LOW            PORTB &= ~(1<<4);
   #define SERVO_5_PINMODE            pinMode(11,OUTPUT); // BI LEFT
   #define SERVO_5_PIN_HIGH           PORTB |= 1<<3;
   #define SERVO_5_PIN_LOW            PORTB &= ~(1<<3);

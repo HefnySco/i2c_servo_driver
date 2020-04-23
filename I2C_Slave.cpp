@@ -373,7 +373,7 @@ void configureI2CSlave()
     Serial.print("configureI2CSlave initialized at ");
 
     // Start the I2C Bus as Slave on address 9
-    Wire.setClock(400000L) ;
+    Wire.setClock(I2C_SPEED) ;
     Wire.begin(MW_I2C__PRIMARY_ADDRESS); 
     Wire.onReceive(receiveEvent);
     Wire.onRequest(requestEvent);

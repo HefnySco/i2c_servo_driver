@@ -415,6 +415,7 @@ void writeMotors() { // [1000;2000] => [125;250]
       #elif defined(EXT_MOTOR_1KHZ)
         OCR1A = (motor[0] - 1000) << 3;
       #else
+      // Arduino Nano
         OCR1A = motor[0]>>3; //  pin 9
       #endif
     #endif
@@ -1137,10 +1138,10 @@ void mixTable() {
   #if defined( MY_PRIVATE_MIXING )
     #include MY_PRIVATE_MIXING
   #elif defined (MW_I2C_ROVER)
-    motor[0] = Servo_Buffer[2];       //LEFT       // D9
+    //motor[0] = Servo_Buffer[2];       //LEFT       // D9
     servo[4] = Servo_Buffer[0];       // pin D11   // servo 1
-    servo[5] = Servo_Buffer[0];       // pin D3    // servo 2
-    servo[6] = Servo_Buffer[0];       // pin D10   // servo 3
+    servo[5] = Servo_Buffer[2];       // pin D3    // servo 2
+    //servo[6] = Servo_Buffer[1];       // pin D10   // servo 3
   #elif defined( BI )
     motor[0] = Servo_Buffer[0]; //LEFT
     motor[1] = Servo_Buffer[1]; //RIGHT

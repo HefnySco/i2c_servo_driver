@@ -351,27 +351,35 @@ void loop () {
   int16_t rc;
   int32_t prop = 0;
 
-
-  
-  if ((int16_t)(currentTime-rcTime) >0 ) { // 50Hz
-    rcTime = currentTime + 20000;
-    computeRC();
-    // ------------------ STICKS COMMAND HANDLER --------------------
-    // checking sticks positions
-    
- 
-  } 
- 
-  // Measure loop rate just afer reading the sensors
   currentTime = micros();
   cycleTime = currentTime - previousTime;
   previousTime = currentTime;
+  
+  while(1) {
+    currentTime = micros();
+    cycleTime = currentTime - previousTime;
+    #if defined(LOOP_TIME)
+      if (cycleTime >= LOOP_TIME) break;
+    #else
+      break;  
+    #endif
+  }
+
+
+  // if ((int16_t)(currentTime-rcTime) >0 ) { // 50Hz
+  //   rcTime = currentTime + 20000;
+    
+ 
+  // } 
+ 
+  // Measure loop rate just afer reading the sensors
+
   if (i2c_slave_received == 1)
   {
     i2c_slave_received_time = currentTime;
     i2c_slave_received = 0;
     counter = 0x00000000;
-    //Serial.print ("  IN IN IN \n");
+    //switch_led_flasher(0);
   }
   else
   {
@@ -379,6 +387,7 @@ void loop () {
     counter += 0x00000001;
     if ((counter & 0b10000 ) && ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT))
     {
+     // switch_led_flasher(1);
       zeroI2C();
       Serial.print(counter & 0x7FFF,DEC);
       Serial.print ("  Zero I2C\n");
