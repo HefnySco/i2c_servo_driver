@@ -11,7 +11,7 @@ void setTiming(uint8_t resource, uint16_t pulse, uint16_t pause);
 void turnOff(uint8_t resource);
 void toggleResource(uint8_t resource, uint8_t activate);
 void vario_output(uint16_t d, uint8_t up);
-void inline switch_led_flasher(uint8_t on);
+
 void inline switch_landing_lights(uint8_t on);
 void PilotLampSequence(uint16_t speed, uint16_t pattern, uint8_t num_patterns);
 
@@ -493,9 +493,9 @@ void blinkLED(uint8_t num, uint8_t ontime,uint8_t repeat) {
       #else
         if (!on) {
       #endif
-        LED_FLASHER_PORT |= (1<<LED_FLASHER_BIT);
+        switch_led_flasher(1);
       } else {
-        LED_FLASHER_PORT &= ~(1<<LED_FLASHER_BIT);
+        switch_led_flasher(0);
       }
     #endif
   }

@@ -147,6 +147,20 @@ void writeServos() {
         #endif
       }
     #endif
+    // if (atomicServo[4] < (1500 <<4))
+    // {
+    //   Serial.print ("X\n");
+    // }
+    // else
+    // {
+      
+    //   Serial.print(atomicServo[4],DEC);
+    //   Serial.print ("\n");
+    // }
+
+    // Serial.print(atomicServo[4],DEC);
+    // Serial.print ("\n");
+
     #if defined(SEC_SERVO_FROM) && !defined(HW_PWM_SERVOS)  // write secundary servos
       #if (defined(SERVO_TILT)|| defined(SERVO_MIX_TILT)) && defined(MMSERVOGIMBAL)
         // Moving Average Servo Gimbal by Magnetron1
@@ -1139,9 +1153,20 @@ void mixTable() {
     #include MY_PRIVATE_MIXING
   #elif defined (MW_I2C_ROVER)
     //motor[0] = Servo_Buffer[2];       //LEFT       // D9
-    servo[4] = Servo_Buffer[0];       // pin D11   // servo 1
-    servo[5] = Servo_Buffer[2];       // pin D3    // servo 2
+    //$$ servo[4] = Servo_Buffer[0];       // pin D11   // servo 1
+    //$$ servo[5] = Servo_Buffer[2];       // pin D3    // servo 2
     //servo[6] = Servo_Buffer[1];       // pin D10   // servo 3
+    servo[5] = Servo_Buffer[2];
+    servo[4] = Servo_Buffer[0];
+    // if (servo[4] > Servo_Buffer[0])
+    // {
+    //    servo[4]-=10;
+    // }
+    // else
+    // {
+    //   servo[4]+=10;
+    // }
+    
   #elif defined( BI )
     motor[0] = Servo_Buffer[0]; //LEFT
     motor[1] = Servo_Buffer[1]; //RIGHT

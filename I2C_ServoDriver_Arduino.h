@@ -31,8 +31,8 @@ extern const char boxnames[];
 extern const uint8_t boxids[];
 
 extern uint32_t currentTime;
-extern uint16_t previousTime;
-extern uint16_t cycleTime;
+extern uint32_t previousTime;
+extern uint32_t cycleTime;
 extern uint16_t calibratingA;
 extern uint16_t calibratingB;
 extern uint16_t calibratingG;

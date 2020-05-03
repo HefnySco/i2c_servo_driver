@@ -138,8 +138,8 @@ const uint8_t boxids[] PROGMEM = {// permanent IDs associated to boxes. This way
 
 
 uint32_t currentTime = 0;
-uint16_t previousTime = 0;
-uint16_t cycleTime = 0;     // this is the number in micro second to achieve a full loop, it can differ a little and is taken into account in the PID loop
+uint32_t previousTime = 0;
+uint32_t cycleTime = 0;     // this is the number in micro second to achieve a full loop, it can differ a little and is taken into account in the PID loop
 int16_t  magHold,headFreeModeHold; // [-180;+180]
 uint8_t  vbatMin = VBATNOMINAL;  // lowest battery voltage in 0.1V steps
 uint8_t  rcOptions[CHECKBOXITEMS];
@@ -346,33 +346,36 @@ void loop () {
   int16_t deltaSum;
   int16_t AngleRateTmp, RateError;
 #endif
-  static uint16_t rcTime  = 0;
   static int16_t initialThrottleHold;
   int16_t rc;
   int32_t prop = 0;
 
   currentTime = micros();
-  cycleTime = currentTime - previousTime;
-  previousTime = currentTime;
+  
   
   while(1) {
     currentTime = micros();
     cycleTime = currentTime - previousTime;
     #if defined(LOOP_TIME)
-      if (cycleTime >= LOOP_TIME) break;
+      if (cycleTime >= LOOP_TIME) 
+      {
+        previousTime = currentTime;
+        //Serial.print ("  CYCLE2 \n");
+        break;
+      }
     #else
+      previousTime = currentTime;
       break;  
     #endif
+
+    // keep waiting
+
   }
 
 
-  // if ((int16_t)(currentTime-rcTime) >0 ) { // 50Hz
-  //   rcTime = currentTime + 20000;
-    
+        
  
-  // } 
- 
-  // Measure loop rate just afer reading the sensors
+  //Measure loop rate just afer reading the sensors
 
   if (i2c_slave_received == 1)
   {
@@ -385,7 +388,8 @@ void loop () {
   {
     // No Data Received
     counter += 0x00000001;
-    if ((counter & 0b10000 ) && ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT))
+    //if ((counter & 0b10000 ) && ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT))
+    if (counter & 0b100000 )
     {
      // switch_led_flasher(1);
       zeroI2C();
@@ -394,6 +398,13 @@ void loop () {
       
     }
     
+  }
+  
+  
+  for (int i=0; i<8; ++i)
+  {
+    if (Servo_Buffer[i]< 1020) Servo_Buffer[i] = 1020;
+    if (Servo_Buffer[i]> 2000) Servo_Buffer[i] = 2000;
   }
 
   mixTable();
