@@ -350,7 +350,7 @@ static void receiveEvent(int bytes) {
   atomic_update =0;
 }
 
-void zeroI2C ()
+void zeroI2C (int value)
 {
   // for (int i=0;i<8;++i)
   // {
@@ -361,7 +361,7 @@ void zeroI2C ()
   Serial.print("Servo_Buffer:\r\n");
   for (i=0;i<8;++i)
   {
-    Servo_Buffer[i] = MINCOMMAND;
+    Servo_Buffer[i] = value;
     Serial.print(Servo_Buffer[i]);
     Serial.print("  ");
   }

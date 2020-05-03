@@ -140,6 +140,8 @@ const uint8_t boxids[] PROGMEM = {// permanent IDs associated to boxes. This way
 uint32_t currentTime = 0;
 uint32_t previousTime = 0;
 uint32_t cycleTime = 0;     // this is the number in micro second to achieve a full loop, it can differ a little and is taken into account in the PID loop
+uint32_t i2c_slave_received_time = 0;
+
 int16_t  magHold,headFreeModeHold; // [-180;+180]
 uint8_t  vbatMin = VBATNOMINAL;  // lowest battery voltage in 0.1V steps
 uint8_t  rcOptions[CHECKBOXITEMS];
@@ -223,7 +225,6 @@ volatile uint16_t Servo_Buffer[SERVO_CHANNELS_MAX] = {0,0,0,0,0,0,0,0,0,0,0,0,0,
 uint8_t rcSerialCount = 0;   // a counter to select legacy RX when there is no more MSP rc serial data
 int16_t lookupPitchRollRC[5];// lookup table for expo & RC rate PITCH+ROLL
 int16_t lookupThrottleRC[11];// lookup table for expo & mid THROTTLE
-uint32_t i2c_slave_received_time;
 volatile uint8_t i2c_slave_received = 0;
 #define I2C_TIME_OUT 999999l
 
@@ -326,7 +327,6 @@ void setup() {
 
 // ******** Main Loop *********
 void loop () {
-  static uint16_t counter =0;
   static uint8_t rcDelayCommand; // this indicates the number of time (multiple of RC measurement at 50Hz) the sticks must be maintained to run or switch off motors
   static uint8_t rcSticks;       // this hold sticks position for command combos
   uint8_t axis,i;
@@ -381,23 +381,15 @@ void loop () {
   {
     i2c_slave_received_time = currentTime;
     i2c_slave_received = 0;
-    counter = 0x00000000;
-    //switch_led_flasher(0);
   }
   else
   {
     // No Data Received
-    counter += 0x00000001;
-    //if ((counter & 0b10000 ) && ((currentTime - i2c_slave_received_time) > I2C_TIME_OUT))
-    if (counter & 0b100000 )
+    if ((i2c_slave_received_time - currentTime) > FAIL_SAFE_TIME)
     {
-     // switch_led_flasher(1);
-      zeroI2C();
-      Serial.print(counter & 0x7FFF,DEC);
+      zeroI2C(MINCOMMAND);
       Serial.print ("  Zero I2C\n");
-      
     }
-    
   }
   
   

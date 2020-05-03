@@ -1845,8 +1845,8 @@
         #error "to use single step telemetry, you MUST also define and configure LCD_TELEMETRY"
 #endif
 
-#if defined(A32U4_4_HW_PWM_SERVOS) && !(defined(HELI_120_CCPM))
-  //#error "for your protection: A32U4_4_HW_PWM_SERVOS was not tested with your coptertype"
+#if defined(A32U4_4_HW_PWM_SERVOS) && !(defined(HELI_120_CCPM)) && !(defined(MW_I2C_ROVER))
+  #error "for your protection: A32U4_4_HW_PWM_SERVOS was not tested with your coptertype"
 #endif
 
 #endif /* DEF_H_ */
